@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 20px;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+h2 {
+    color: #555;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+code {
+    background-color: #f1f1f1;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+pre {
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+</head>
+<body>
+
+<h1>Полный гайд по созданию оружия в TFA (Tactical Firearms Addon)</h1>
+
+<h2>Основные настройки</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.Base</code></td>
+<td>Базовый класс оружия, от которого наследуется это оружие</td>
+</tr>
+<tr>
+<td><code>SWE.Category</code></td>
+<td>Категория, в которой будет отображаться оружие в меню спавна</td>
+</tr>
+<tr>
+<td><code>SWE.Spawnable</code></td>
+<td>Можно ли обычным игрокам брать это оружие (true/false)</td>
+</tr>
+<tr>
+<td><code>SWE.AdminSpawnable</code></td>
+<td>Можно ли администраторам брать это оружие (true/false)</td>
+</tr>
+</table>
+
+<h2>Параметры боеприпасов</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.Primary.ClipSize</code></td>
+<td>Размер магазина (сколько патронов помещается)</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.DefaultClip</code></td>
+<td>Начальное количество патронов (в запасе + в магазине)</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.Ammo</code></td>
+<td>Тип боеприпасов (например, "pistol", "rifle", "shotgun")</td>
+</tr>
+</table>
+
+<h2>Характеристики стрельбы</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.Primary.RPM</code></td>
+<td>Скорострельность (выстрелы в минуту)</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.Damage</code></td>
+<td>Урон одного выстрела</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.NumShots</code></td>
+<td>Количество пуль за один выстрел (для дробовиков может быть больше 1)</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.Spread</code></td>
+<td>Разброс пуль при стрельбе без прицеливания</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.IronAccuracy</code></td>
+<td>Точность при стрельбе с прицеливанием</td>
+</tr>
+</table>
+
+<h2>Настройки прицеливания</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.data.ironsights</code></td>
+<td>Включение системы прицеливания (1 - включено, 0 - выключено)</td>
+</tr>
+<tr>
+<td><code>SWE.Secondary.IronFOV</code></td>
+<td>Поле зрения (Field of View) при прицеливании</td>
+</tr>
+</table>
+
+<h2>Модели оружия</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.ViewModel</code></td>
+<td>Модель оружия для первого лица (view model)</td>
+</tr>
+<tr>
+<td><code>SWE.WorldModel</code></td>
+<td>Модель оружия для третьего лица (world model)</td>
+</tr>
+</table>
+
+<h2>Звуки</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.Primary.Sound</code></td>
+<td>Звук выстрела</td>
+</tr>
+<tr>
+<td><code>SWE.Primary.ReloadSound</code></td>
+<td>Звук перезарядки</td>
+</tr>
+</table>
+
+<h2>Анимации</h2>
+<pre><code>
+SWE.Animations = {
+    ["reload"] = {
+        ["type"] = TFA.Enum.ANIMATION_ACT, 
+        ["value"] = ACT_VM_RELOAD // Анимация перезарядки
+    }
+}
+</code></pre>
+
+<h2>Другие настройки</h2>
+<table>
+<tr>
+<th>Переменная</th>
+<th>Описание</th>
+</tr>
+<tr>
+<td><code>SWE.HoldType</code></td>
+<td>Тип анимации холда (например, "pistol", "ar2", "shotgun")</td>
+</tr>
+<tr>
+<td><code>SWE.Slot</code></td>
+<td>Слот инвентаря, где будет находиться оружие (1-9)</td>
+</tr>
+<tr>
+<td><code>SWE.SlotPos</code></td>
+<td>Позиция внутри слота</td>
+</tr>
+<tr>
+<td><code>SWE.AutoSwitchTo</code></td>
+<td>Автоматически переключаться на это оружие при подборе (true/false)</td>
+</tr>
+<tr>
+<td><code>SWE.AutoSwitchFrom</code></td>
+<td>Автоматически переключаться с этого оружия при подборе другого (true/false)</td>
+</tr>
+</table>
+
+<h2>Пример полного кода оружия</h2>
+<pre><code>
+SWE.Base = "tfa_gun_base"
+SWE.Category = "Custom Weapons"
+SWE.Spawnable = true
+SWE.AdminSpawnable = true
+
+// Параметры боеприпасов
+SWE.Primary.ClipSize = 30
+SWE.Primary.DefaultClip = 120
+SWE.Primary.Ammo = "pistol"
+
+// Характеристики стрельбы
+SWE.Primary.RPM = 600
+SWE.Primary.Damage = 25
+SWE.Primary.NumShots = 1
+SWE.Primary.Spread = 0.02
+SWE.Primary.IronAccuracy = 0.01
+
+// Прицеливание
+SWE.data = {}
+SWE.data.ironsights = 1
+SWE.Secondary.IronFOV = 75
+
+// Модели
+SWE.ViewModel = "models/weapons/v_pistol.mdl"
+SWE.WorldModel = "models/weapons/w_pistol.mdl"
+
+// Звуки
+SWE.Primary.Sound = Sound("Weapon_Pistol.Single")
+SWE.Primary.ReloadSound = Sound("Weapon_Pistol.Reload")
+
+// Анимации
+SWE.Animations = {
+    ["reload"] = {
+        ["type"] = TFA.Enum.ANIMATION_ACT, 
+        ["value"] = ACT_VM_RELOAD
+    }
+}
+
+// Другие настройки
+SWE.HoldType = "pistol"
+SWE.Slot = 1
+SWE.SlotPos = 2
+SWE.AutoSwitchTo = false
+SWE.AutoSwitchFrom = false
+</code></pre>
+
+</body>
+</html>
